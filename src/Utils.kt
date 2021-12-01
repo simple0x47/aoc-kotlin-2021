@@ -5,16 +5,21 @@ import java.security.MessageDigest
 /**
  * Reads lines from the given input for a specific day, indicating whether to retrieve the test input.
  */
-fun readInputForDay(day: Int, test: Boolean) : List<String> {
-    val name: String = String.format("Day%02d", day)
+fun readInputForDay(day: Int, test: Boolean = false) : List<String> {
+    var name: String = String.format("Day%02d", day)
+    val directory: String = "src/${name.lowercase()}"
 
-    return readInput(name)
+    if (test) {
+        name = "${name}_test"
+    }
+
+    return readInput(directory, name)
 }
 
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = File("src/${name.lowercase()}", "$name.txt").readLines()
+fun readInput(directory: String, name: String) = File(directory, "$name.txt").readLines()
 
 /**
  * Converts string to md5 hash.
