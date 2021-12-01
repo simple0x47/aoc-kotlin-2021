@@ -34,11 +34,14 @@ fun run() {
         val compoundsCount = input.size - compoundBy + 1
 
         val compounds = ArrayList<Int>()
-
+        var compoundAmount = 0
         for (compound in 0 until compoundsCount) {
-            compounds.add(input[compound].toInt() +
-                    input[compound + 1].toInt() +
-                    input[compound + 2].toInt())
+            for (i in 0 until compoundBy) {
+                compoundAmount += input[compound + i].toInt()
+            }
+
+            compounds.add(compoundAmount)
+            compoundAmount = 0
         }
 
         return countLargerThanPrevious(compounds)
