@@ -10,11 +10,12 @@ fun main()
         return
     }
 
-    when (day)
-    {
-        1 ->
-        {
+    when (day) {
+        1 -> {
             day01.run()
+        }
+        2 -> {
+            day02.run()
         }
     }
 }
