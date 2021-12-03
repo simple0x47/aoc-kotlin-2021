@@ -5,7 +5,7 @@ import readInputForDay
 fun run() {
     // First part.
     fun calculateFinalPositionProduct(input: List<String>): Long {
-        val submarine: Submarine = Submarine()
+        val submarine: Submarine = NewbieSubmarine()
 
         for (command in input) {
             val commandParts: List<String> = command.split(" ")
@@ -20,7 +20,8 @@ fun run() {
             }
         }
 
-        return submarine.x * submarine.invertedY
+        val position: VerticalInvertedPosition = submarine.position
+        return position.x * position.invertedY
     }
 
     val testInput = readInputForDay(2, true)

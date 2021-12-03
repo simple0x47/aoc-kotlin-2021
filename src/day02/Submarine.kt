@@ -1,20 +1,10 @@
 package day02
 
-class Submarine {
-    var x: Long = 0L
-        private set
-    var invertedY: Long = 0L
-        private set
+interface Submarine {
 
-    fun forward(amount: Long) {
-        x += amount
-    }
+    val position: VerticalInvertedPosition
 
-    fun down(amount: Long) {
-        invertedY += amount
-    }
-
-    fun up(amount: Long) {
-        invertedY -= amount
-    }
+    fun forward(amount: Long)
+    fun down(amount: Long)
+    fun up(amount: Long)
 }
