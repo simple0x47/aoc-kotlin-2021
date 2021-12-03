@@ -1,20 +1,23 @@
 package day02
 
-class NewbieSubmarine : Submarine {
+class RealSubmarine : Submarine {
     private val _position: VerticalInvertedPosition = VerticalInvertedPosition()
+
+    private var aim : Long = 0L
 
     override val position: VerticalInvertedPosition
         get() = _position.copy()
 
     override fun forward(amount: Long) {
         _position.x += amount
+        _position.invertedY += amount * aim
     }
 
     override fun down(amount: Long) {
-        _position.invertedY += amount
+        aim += amount
     }
 
     override fun up(amount: Long) {
-        _position.invertedY -= amount
+        aim -= amount
     }
 }
