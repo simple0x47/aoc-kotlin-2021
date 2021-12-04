@@ -17,5 +17,8 @@ fun main()
         2 -> {
             day02.run()
         }
+        3 -> {
+            day03.run()
+        }
     }
 }
