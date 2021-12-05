@@ -11,7 +11,7 @@ class DiagnosticDecoder(private var diagnosticInput: List<String>, private var d
     private fun mostCommonBitwiseValue() : Int {
         var mostCommonBits: Int = 0
 
-        var bitsCount: IntArray = IntArray(diagnosticInputBits)
+        val bitsCount: IntArray = IntArray(diagnosticInputBits)
         for (value in diagnosticInput) {
             for (bit in 0 until diagnosticInputBits) {
                 if (value[bit].digitToInt() == 1) {
