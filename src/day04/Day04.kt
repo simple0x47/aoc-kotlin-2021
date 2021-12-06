@@ -6,11 +6,16 @@ fun run() {
     val bingoPlayer: BingoPlayer = BingoPlayer()
 
     val testInput = readInputForDay(4, true)
-    val testEventsHandler = Day04FirstPartTestBingoEventsHandler()
-    bingoPlayer.playInput(testInput, testEventsHandler)
-    check(testEventsHandler.hasBoardWon)
+    val firstPartTestEventHandler = Day04FirstPartTestBingoEventsHandler()
+    bingoPlayer.playInput(testInput, firstPartTestEventHandler)
+    check(firstPartTestEventHandler.hasBoardWon)
+    val secondPartTestEventHandler = Day04SecondPartTestBingoEventsHandler()
+    bingoPlayer.playInput(testInput, secondPartTestEventHandler, playUntilLastWinner = true)
+    check(secondPartTestEventHandler.hasBoardWon)
 
     val input = readInputForDay(4)
-    val eventsHandler = Day04FirstPartBingoEventsHandler()
-    bingoPlayer.playInput(input, eventsHandler)
+    val firstPartEventsHandler = Day04FirstPartBingoEventsHandler()
+    bingoPlayer.playInput(input, firstPartEventsHandler)
+    val secondPartEventsHandler = Day04SecondPartBingoEventsHandler()
+    bingoPlayer.playInput(input, secondPartEventsHandler, playUntilLastWinner = true)
 }

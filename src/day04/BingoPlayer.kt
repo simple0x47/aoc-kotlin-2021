@@ -1,7 +1,5 @@
 package day04
 
-import java.lang.NumberFormatException
-
 class BingoPlayer() {
     private val drawnNumbersLine: Int = 0
     private val bingoBoardNumbersRegex: Regex = "\\D+".toRegex()
@@ -14,7 +12,7 @@ class BingoPlayer() {
     private var drawnNumber: Int = -1
     private var lastDrawnNumberIndex: Int = -1
 
-    fun playInput(input: List<String>, eventsHandler: BingoEventsHandler) {
+    fun playInput(input: List<String>, eventsHandler: BingoEventsHandler, playUntilLastWinner: Boolean = false) {
         splitRawDrawnNumbers = input[drawnNumbersLine].split(",")
 
         retrieveBingoBoards(input.subList(2, input.size))
@@ -22,7 +20,11 @@ class BingoPlayer() {
         // Assure correct initial state for several play calls.
         initializeStartingState()
 
-        gameLoop()
+        if (playUntilLastWinner) {
+            wiseGameLoop()
+        } else {
+            gameLoop()
+        }
 
         winner?.let {
             eventsHandler.onBoardWin(it, drawnNumber)
@@ -112,11 +114,23 @@ class BingoPlayer() {
         lastDrawnNumberIndex = -1
     }
 
+    private fun wiseGameLoop() {
+        while (moreDrawnNumbers()) {
+            retrieveNextDrawnNumber()
+
+            if (setWinnerBoardIfApplicable(playUntilLastBoardWins = true)) {
+                if (winner != null) {
+                    return
+                }
+            }
+        }
+    }
+
     private fun gameLoop() {
         while (moreDrawnNumbers()) {
             retrieveNextDrawnNumber()
 
-            if (hasAnyBoardWon()) {
+            if (setWinnerBoardIfApplicable()) {
                 return
             }
         }
@@ -139,18 +153,41 @@ class BingoPlayer() {
 
     /**
      * Sets the winner property to the first detected winner board and returns whether any board has won.
+     *
+     * If the game is played until the last board wins, then the previous winners will be removed from
+     * the storage of all the boards in order to ease the operation.
      */
-    private fun hasAnyBoardWon() : Boolean {
+    private fun setWinnerBoardIfApplicable(playUntilLastBoardWins: Boolean = false) : Boolean {
+        var winners: ArrayList<BingoBoard> = ArrayList()
+
         for (board in bingoBoards) {
             // Boolean: whether is bingo.
             val bingoAndNumberIfApplicable: Boolean = board.hasBingoByDrawnNumber(drawnNumber)
 
             if (bingoAndNumberIfApplicable) {
-                winner = board
-                return true
+                winners.add(board)
+
+                if (!playUntilLastBoardWins) {
+                    winner = board
+                    return true
+                }
             }
         }
 
-        return false
+        if (playUntilLastBoardWins) {
+            removePreviousWinners(winners)
+        }
+
+        return (winners.size > 0)
+    }
+
+    private fun removePreviousWinners(previousWinners: List<BingoBoard>) {
+        for (winningBoard in previousWinners) {
+            if (bingoBoards.size > 1) {
+                bingoBoards.remove(winningBoard)
+            } else {
+                winner = bingoBoards[0]
+            }
+        }
     }
 }
